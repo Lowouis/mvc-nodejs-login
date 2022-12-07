@@ -1,8 +1,19 @@
 //requiring models of user from models folder and bycrypt for password hashing
 const User = require('../models/User');
-const bycrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
+const passport = require('passport');
+
+// for the register view page
+const registerView = (req, res) => {
+    res.render('register', {});
+}
 
 
+
+// for the login view page
+const loginView = (req, res) => {
+    res.render('login', { });
+}
 
 const registerUser = (req,res) =>{
     const {name, email, location, password, confirm} = req.body;
@@ -27,9 +38,9 @@ const registerUser = (req,res) =>{
                     location,
                     password
                 });
-                //hashing password with bycrypt
-                bycrypt.genSalt(10, (err, salt) => {
-                    bycrypt.hash(newUser.password, salt, (err, hash) => {
+                //hashing password with bcrypt
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(newUser.password, salt, (err, hash) => {
                         if(err){throw err}
                         newUser.password = hash;
                         newUser
@@ -41,12 +52,11 @@ const registerUser = (req,res) =>{
             }
         });
     }
-
-
 }
 
-//check if user is logged in correctly, if not -> redirect to login page
+//check if user is logged in correctly with the post request, if not -> redirect to login page
 const loginUser = (req, res) => {
+
     const {email, password} = req.body;
     //checking fields are not empty
     if( !email || !password){
@@ -54,26 +64,20 @@ const loginUser = (req, res) => {
         res.render('login', { email, password });
     }
     else{
+        console.log('Je vais ici');
         //if password is good ? go to dashboard : login page
+
         passport.authenticate('local', {
-            successRedirect: '/dashboard',
-            failureRedirect: '/login',
-            failureFlash: true
-        })(req,res)
+                successRedirect: '/dashboard',
+                failureRedirect: '/login',
+                failureFlash: true
+            }, (req, res)=>{
+                res.redirect('/dashboard');
+            });
     }
+
 };
 
-
-
-// for the register view page
-const registerView = (req, res) => {
-    res.render('register', {});
-}
-
-// for the login view page
-const loginView = (req, res) => {
-    res.render('login', { });
-}
 
 
 module.exports = {
@@ -81,4 +85,4 @@ module.exports = {
     loginView,
     registerUser,
     loginUser
-}
+};

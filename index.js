@@ -10,8 +10,8 @@ const { loginCheck } = require('./auth/passport');
 mongoose.set('strictQuery', false);
 
 
-app.use(passport.initialize());
-app.use(passport.session());
+/*app.use(passport.initialize());
+app.use(passport.session());*/
 
 //allowing us to have a response as a json
 app.use(express.urlencoded({ extended: false }));
