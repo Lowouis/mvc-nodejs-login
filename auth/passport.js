@@ -11,7 +11,7 @@ const loginCheck = passport => {
             User.findOne({ email : email })
                 .then(user => {
                     if(!user){
-                        return done(null, false, { message: 'That email is not registered or is wrong' });
+                        return done(null, false, { message: 'That email is not registered' });
                     }
                     //checking password if matching
                     bcrypt.compare(password, user.password, (err, isMatch) => {
@@ -28,8 +28,6 @@ const loginCheck = passport => {
             }
         )
     )
-
-
     passport.serializeUser((user, done) => {
         done(null, user.id);
     });
