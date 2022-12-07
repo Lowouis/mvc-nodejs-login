@@ -3,14 +3,15 @@ const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const session = require('express-session');
-const databaseCreditential = process.env.MANGOLAB_URI;
-dotenv.config();
+
+
 
 const PORT = process.env.PORT || 3000;
 const passport = require("passport");
 const { loginCheck } = require("./auth/passport");
 
-
+dotenv.config();
+const databaseCreditential = process.env.MANGOLAB_URI;
 
 loginCheck(passport);
 mongoose.set('strictQuery', false);
@@ -18,7 +19,7 @@ mongoose.set('strictQuery', false);
 
 //mangodb connection
 //setting up the db connection
-mongoose.connect("mongodb+srv://louisgurita:qCMzP4cidNERrH7x@project.0y30dyg.mongodb.net/?retryWrites=true&w=majority", {useNewUrlParser:true, useUnifiedTopology:true})
+mongoose.connect(databaseCreditential, {useNewUrlParser:true, useUnifiedTopology:true})
     .then(() => console.log('MongoDB connected...'))
     .catch(err => console.log(`Connexion failed error : ${err}`));
 
