@@ -8,13 +8,13 @@ const registerView = (req, res) => {
     res.render('register', {});
 }
 
-
-
 // for the login view page
 const loginView = (req, res) => {
     res.render('login', { });
 }
-
+const logoutUser = (req,res) =>{
+    res.redirect('/login');
+}
 const registerUser = (req,res) =>{
     const {name, email, location, password, confirm} = req.body;
     //checking fields are not empty
@@ -79,5 +79,6 @@ module.exports = {
     registerView,
     loginView,
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser
 };

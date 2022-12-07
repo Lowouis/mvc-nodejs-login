@@ -18,7 +18,7 @@ mongoose.set('strictQuery', false);
 
 //mangodb connection
 //setting up the db connection
-mongoose.connect(databaseCreditential, {useNewUrlParser:true, useUnifiedTopology:true})
+mongoose.connect("mongodb+srv://louisgurita:qCMzP4cidNERrH7x@project.0y30dyg.mongodb.net/?retryWrites=true&w=majority", {useNewUrlParser:true, useUnifiedTopology:true})
     .then(() => console.log('MongoDB connected...'))
     .catch(err => console.log(`Connexion failed error : ${err}`));
 
