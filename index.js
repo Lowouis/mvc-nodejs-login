@@ -1,33 +1,41 @@
-//setting up the environment variables
-const express = require('express');
+const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 3000;
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
-const passport = require('passport');
-const { loginCheck } = require('./auth/passport');
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const session = require('express-session');
+const databaseCreditential = process.env.MANGOLAB_URI;
+dotenv.config();
 
+const PORT = process.env.PORT || 3000;
+const passport = require("passport");
+const { loginCheck } = require("./auth/passport");
+
+
+
+loginCheck(passport);
 mongoose.set('strictQuery', false);
 
 
-//allowing us to have a response as a json
-app.use(express.urlencoded({ extended: false }));
-
+//mangodb connection
+//setting up the db connection
+mongoose.connect(databaseCreditential, {useNewUrlParser:true, useUnifiedTopology:true})
+    .then(() => console.log('MongoDB connected...'))
+    .catch(err => console.log(`Connexion failed error : ${err}`));
 
 //setting up the engine of the view
 app.set('view engine', 'ejs');
 
-
-//setting up the db connection
-dotenv.config();
-const db = process.env.MANGOLAB_URI;
-//mangodb connection
-mongoose.connect(db, {useNewUrlParser:true, useUnifiedTopology:true})
-    .then(() => console.log('MongoDB connected...'))
-    .catch(err => console.log(`Connexion failed error : ${err}`));
-
+//allowing us to have a response as a json (body parsing)
+app.use(express.urlencoded({ extended: false }));
+app.use(session({
+    secret:'oneboy',
+    saveUninitialized: true,
+    resave: true
+}));
 
 
+app.use(passport.initialize());
+app.use(passport.session());
 //settings up all routes
 app.use('/', require('./routes/login'));
 
