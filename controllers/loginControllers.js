@@ -32,11 +32,10 @@ const registerUser = (req,res) =>{
                     bycrypt.hash(newUser.password, salt, (err, hash) => {
                         if(err){throw err}
                         newUser.password = hash;
-                        newUser.save()
-                            .then(user => {
-                                console.log(`User : ${user} -> registered`);
-                            })
-                            .catch(err => console.log(`User : ${user} -> not registered because of error : ${err}`));
+                        newUser
+                            .save()
+                            .then(res.redirect('/login'))
+                            .catch(err => console.log(`User not registered because of error : ${err}`))
                     });
                 });
             }
@@ -45,6 +44,26 @@ const registerUser = (req,res) =>{
 
 
 }
+
+//check if user is logged in correctly, if not -> redirect to login page
+const loginUser = (req, res) => {
+    const {email, password} = req.body;
+    //checking fields are not empty
+    if( !email || !password){
+        console.log('Please fill all the fields');
+        res.render('login', { email, password });
+    }
+    else{
+        //if password is good ? go to dashboard : login page
+        passport.authenticate('local', {
+            successRedirect: '/dashboard',
+            failureRedirect: '/login',
+            failureFlash: true
+        })(req,res)
+    }
+};
+
+
 
 // for the register view page
 const registerView = (req, res) => {
@@ -60,5 +79,6 @@ const loginView = (req, res) => {
 module.exports = {
     registerView,
     loginView,
-    registerUser
+    registerUser,
+    loginUser
 }
