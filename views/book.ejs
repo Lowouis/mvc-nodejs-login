@@ -1,0 +1,20 @@
+<%- include('layout.ejs'); %>
+<link rel="stylesheet" href="style/books.css">
+<h2>Books list</h2>
+<% if(detailBook !== null){ %>
+    <div class="col-sm-3 d-flex justify-content-center " id="<%= detailBook.isbn %>">
+        <div>
+            <img src="<%= detailBook.thumbnailUrl %>" alt="<%= detailBook.title %>" class="w-50 px-3">
+            <div class="container" >
+                <h4><b><%= detailBook.title %></b></h4>
+                <p><%= detailBook.longDescription !== undefined ? truncate(detailBook.longDescription, 150) : "no description" %></p>
+            </div>
+        </div>
+    </div>
+<% } else{ %>
+    <h1>No book find</h1>
+<% } %>
+<a href="/books"> <button type="submit" class="btn btn-success btn-lg login-button">Return to Books Collections</button> </a>
+
+</body>
+</html>

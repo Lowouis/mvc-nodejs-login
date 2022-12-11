@@ -1,0 +1,18 @@
+<%- include('layout.ejs'); %>
+<link rel="stylesheet" type="text/css" href="style/books.css" />
+<h2>Books list</h2>
+<div class="row">
+    <% for(var i=0; i < 40; i++) {%>
+        <div class="col-sm-3 book_box" onclick="window.location='/books/<%= titlesBooks[i].isbn %>';">
+            <div>
+                <img src="<%= titlesBooks[i].thumbnailUrl %>" alt="<%= titlesBooks[i].title %>" class="w-50 px-3 border-5 border border-primary">
+                <div class="container" >
+                    <h4><b><%= titlesBooks[i].title %></b></h4>
+                    <p><%= titlesBooks[i].longDescription !== undefined ? truncate(titlesBooks[i].longDescription, 150) : "no description"%></p>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</div>
+</body>
+</html>
